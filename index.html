@@ -620,7 +620,8 @@
       };
 
       try {
-        const res = await fetch('http://localhost:3000/api/support', {
+        const res = await fetch('https://ВАШ_САЙТ.onrender.com/api/support', {
+
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
