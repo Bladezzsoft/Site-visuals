@@ -8,7 +8,7 @@ const path = require('path');
 
 // ===================== НАСТРОЙКИ =====================
 // Токен: переменная BOT_TOKEN в Render главнее, иначе берётся из строки ниже
-const BOT_TOKEN = process.env.BOT_TOKEN || 'ВСТАВЬ_СЮДА_ТОКЕН';
+const BOT_TOKEN = process.env.BOT_TOKEN || '9018221392:AAGOD-lKDwKcHrTvH-xVhODOiIoT2Kr82Sk';
 // Владельцы (всегда админы, их роль нельзя снять). Твой Telegram ID:
 const OWNER_IDS = process.env.OWNER_IDS
   ? process.env.OWNER_IDS.split(',').map((s) => Number(s.trim())).filter(Boolean)
