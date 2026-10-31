@@ -1,7 +1,11 @@
+`app.listen` в конце файла отсутствует. Вот полный исправленный `server.js` — скопируйте entirely, замените своим файлом и залейте на GitHub:
+
+```js
 const express = require('express');
 const cors = require('cors');
 
 const app = express();
+app.use(express.static('.'));
 app.use(cors());
 app.use(express.json());
 
@@ -10,6 +14,11 @@ const API = `https://api.telegram.org/bot${TOKEN}`;
 
 let OWNER_CHAT_ID = null;
 let lastUpdateId = 0;
+
+/* Главная страница — отдаёт index.html */
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
 
 /* Приём заявки с сайта */
 app.post('/api/support', async (req, res) => {
@@ -68,7 +77,7 @@ async function handleMessage(msg) {
   const chatId = msg.chat.id;
   const text = msg.text || '';
 
-  // Pierwsza osoba, która napisze боту, становится владельцем
+  // Первое сообщение — становится владельцем
   if (!OWNER_CHAT_ID) {
     OWNER_CHAT_ID = chatId;
     await sendMessage(chatId, `✅ Вы установлены как владелец BladeVisuals.\n\nТеперь вам будут приходить заявки из поддержки.\n\nКоманды:\n/reply <юзернейм или ID> <текст> — ответить пользователю\n/id — узнать свой chat ID`);
@@ -118,4 +127,14 @@ function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-app.listen(process.env.PORT || 3000, () => console.log(`Server running on port ${process.env.PORT || 3000}`));
+/* Запуск сервера */
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server running on port ${process.env.PORT || 3000}`);
+});
+```
+
+### Что добавлено
+- `app.get('/', ...)` — теперь при открытии адреса Render будет показываться ваш `index.html` вместо ошибки `Cannot GET`.
+- `app.listen(process.env.PORT || 3000, ...)` — сервер запускается на порту, который выделяет Render.
+
+После этого закоммитьте изменения и запушьте на GitHub, затем в Render нажмите **Redeploy**.
