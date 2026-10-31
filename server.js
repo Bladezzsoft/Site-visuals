@@ -1,6 +1,3 @@
-`app.listen` в конце файла отсутствует. Вот полный исправленный `server.js` — скопируйте entirely, замените своим файлом и залейте на GitHub:
-
-```js
 const express = require('express');
 const cors = require('cors');
 
@@ -15,12 +12,10 @@ const API = `https://api.telegram.org/bot${TOKEN}`;
 let OWNER_CHAT_ID = null;
 let lastUpdateId = 0;
 
-/* Главная страница — отдаёт index.html */
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-/* Приём заявки с сайта */
 app.post('/api/support', async (req, res) => {
   const { nickname, telegram, message } = req.body || {};
   if (!nickname || !telegram || !message) {
@@ -56,7 +51,6 @@ app.post('/api/support', async (req, res) => {
   }
 });
 
-/* Опрос Telegram (polling) */
 setInterval(async () => {
   try {
     const r = await fetch(`${API}/getUpdates?offset=${lastUpdateId + 1}&timeout=30`);
@@ -77,7 +71,6 @@ async function handleMessage(msg) {
   const chatId = msg.chat.id;
   const text = msg.text || '';
 
-  // Первое сообщение — становится владельцем
   if (!OWNER_CHAT_ID) {
     OWNER_CHAT_ID = chatId;
     await sendMessage(chatId, `✅ Вы установлены как владелец BladeVisuals.\n\nТеперь вам будут приходить заявки из поддержки.\n\nКоманды:\n/reply <юзернейм или ID> <текст> — ответить пользователю\n/id — узнать свой chat ID`);
@@ -89,7 +82,6 @@ async function handleMessage(msg) {
     return;
   }
 
-  // Владелец отвечает пользователю
   if (text.startsWith('/reply ')) {
     const parts = text.split(' ');
     const target = parts[1];
@@ -127,14 +119,6 @@ function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/* Запуск сервера */
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server running on port ${process.env.PORT || 3000}`);
 });
-```
-
-### Что добавлено
-- `app.get('/', ...)` — теперь при открытии адреса Render будет показываться ваш `index.html` вместо ошибки `Cannot GET`.
-- `app.listen(process.env.PORT || 3000, ...)` — сервер запускается на порту, который выделяет Render.
-
-После этого закоммитьте изменения и запушьте на GitHub, затем в Render нажмите **Redeploy**.
