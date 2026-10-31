@@ -6,10 +6,6 @@ const path = require('path');
 // ===================== НАСТРОЙКИ =====================
 const BOT_TOKEN = process.env.BOT_TOKEN || '9018221392:AAGOD-lKDwKcHrTvH-xVhODOiIoT2Kr82Sk';
 const ADMIN_IDS = [5587740615]; // сюда свой Telegram ID
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean)
-  .map(Number);
 const SITE_URL = 'https://site-visuals.onrender.com';
 const PORT = process.env.PORT || 3000;
 const DB_FILE = path.join(__dirname, 'db.json');
