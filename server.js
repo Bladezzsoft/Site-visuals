@@ -4,8 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 // ===================== НАСТРОЙКИ =====================
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const ADMIN_IDS = (process.env.ADMIN_IDS || '')
+const BOT_TOKEN = process.env.BOT_TOKEN || '9018221392:AAHgdmTjhPa7PbC8I1smVzKQVORRNq46_uo';
+const ADMIN_IDS = [5587740615]; // сюда свой Telegram ID
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean)
